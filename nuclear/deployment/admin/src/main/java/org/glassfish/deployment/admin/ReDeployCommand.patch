@@ -1,0 +1,50 @@
+Index: ReDeployCommand.java
+===================================================================
+--- ReDeployCommand.java	(revision 56959)
++++ ReDeployCommand.java	(working copy)
+@@ -64,6 +64,8 @@
+ import java.util.Collection;
+ import java.util.ArrayList;
+ import java.io.File;
++import java.net.URI;
++
+ import org.glassfish.api.admin.AccessRequired;
+ 
+ /**
+@@ -91,7 +93,9 @@
+     String name;
+ 
+     @Param(primary=true, optional=true)
+-    File path = null;
++    public void setPath(URI path) {
++        super.setPath(path);
++    }
+     
+     @Inject
+     private ConfigBeansUtilities configBeansUtilities;
+@@ -148,7 +152,7 @@
+             report.setActionExitCode(ActionReport.ExitCode.FAILURE);
+             return false;
+         }
+-        else if (path == null) {
++        else if (getPath() == null) {
+             /**
+              * If path is not specified on the command line but the application
+              * is not directory deployed then throw an exception since we don't
+@@ -162,13 +166,9 @@
+         }
+ 
+         //if path not specified on the command line then get it from domain.xml
+-        super.path = (path==null)?new File(configBeansUtilities.getLocation(name)):path;
+-        if (!super.path.exists()) {
+-                //if unable to get path from domain.xml then return error.
+-            report.setMessage(localStrings.getLocalString("redeploy.command.invalid.path", "Cannot determine the path of application."));
+-            report.setActionExitCode(ActionReport.ExitCode.FAILURE);
+-            return false;
+-        }
++        if (getPath() == null) {
++            setPath(URI.create(configBeansUtilities.getLocation(name)));
++         }
+         return true;
+     }
+ 

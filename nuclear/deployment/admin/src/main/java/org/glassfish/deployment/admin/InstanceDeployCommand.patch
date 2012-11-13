@@ -1,0 +1,38 @@
+Index: InstanceDeployCommand.java
+===================================================================
+--- InstanceDeployCommand.java	(revision 56959)
++++ InstanceDeployCommand.java	(working copy)
+@@ -167,8 +167,9 @@
+         }
+ 
+         try {
+-            if (!path.exists()) {
+-                report.setMessage(localStrings.getLocalString("fnf","File not found", path.getAbsolutePath()));
++        	File file = getPathAsFile();
++            if (file != null && !file.exists()) {
++                report.setMessage(localStrings.getLocalString("fnf","File not found", file.getAbsolutePath()));
+                 report.setActionExitCode(ActionReport.ExitCode.FAILURE);
+                 return;
+             }
+@@ -179,10 +180,10 @@
+                 return;
+             }
+ 
+-            archive = archiveFactory.openArchive(path, this);
++            archive = archiveFactory.openArchive(getPath(), this);
+             ArchiveHandler archiveHandler = deployment.getArchiveHandler(archive, type);
+             if (archiveHandler==null) {
+-                report.failure(logger,localStrings.getLocalString("deploy.unknownarchivetype","Archive type of {0} was not recognized",path.getName()));
++                report.failure(logger,localStrings.getLocalString("deploy.unknownarchivetype","Archive type of {0} was not recognized",getPath()));
+                 return;
+             }
+ 
+@@ -244,7 +245,7 @@
+                 logger.log(Level.INFO, localStrings.getLocalString(
+                         "errClosingArtifact",
+                         "Error while closing deployable artifact : ",
+-                        path.getAbsolutePath()), e);
++                        getPath()), e);
+             }
+             if (report.getActionExitCode().equals(ActionReport.ExitCode.SUCCESS)) {
+                 logger.info(localStrings.getLocalString(
