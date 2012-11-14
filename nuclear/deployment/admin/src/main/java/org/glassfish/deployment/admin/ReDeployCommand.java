@@ -96,6 +96,10 @@ public class ReDeployCommand extends DeployCommandParameters implements AdminCom
     public void setPath(URI path) {
         super.setPath(path);
     }
+
+    public URI getPath() {
+        return super.getPath();
+    }
     
     @Inject
     private ConfigBeansUtilities configBeansUtilities;
@@ -130,6 +134,7 @@ public class ReDeployCommand extends DeployCommandParameters implements AdminCom
         }
 
         paramMap.set("force", String.valueOf(true));
+        paramMap.set("path", getPath().toString());
 
         CommandRunner.CommandInvocation inv = commandRunner.getCommandInvocation("deploy", report);
         inv.parameters(paramMap).inbound(context.getInboundPayload()).outbound(context.getOutboundPayload()).execute();

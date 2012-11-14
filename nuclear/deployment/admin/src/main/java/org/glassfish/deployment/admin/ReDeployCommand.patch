@@ -11,7 +11,7 @@ Index: ReDeployCommand.java
  import org.glassfish.api.admin.AccessRequired;
  
  /**
-@@ -91,7 +93,9 @@
+@@ -91,7 +93,13 @@
      String name;
  
      @Param(primary=true, optional=true)
@@ -19,10 +19,22 @@ Index: ReDeployCommand.java
 +    public void setPath(URI path) {
 +        super.setPath(path);
 +    }
++
++    public URI getPath() {
++        return super.getPath();
++    }
      
      @Inject
      private ConfigBeansUtilities configBeansUtilities;
-@@ -148,7 +152,7 @@
+@@ -126,6 +134,7 @@
+         }
+ 
+         paramMap.set("force", String.valueOf(true));
++        paramMap.set("path", getPath().toString());
+ 
+         CommandRunner.CommandInvocation inv = commandRunner.getCommandInvocation("deploy", report);
+         inv.parameters(paramMap).inbound(context.getInboundPayload()).outbound(context.getOutboundPayload()).execute();
+@@ -148,7 +157,7 @@
              report.setActionExitCode(ActionReport.ExitCode.FAILURE);
              return false;
          }
@@ -31,7 +43,7 @@ Index: ReDeployCommand.java
              /**
               * If path is not specified on the command line but the application
               * is not directory deployed then throw an exception since we don't
-@@ -162,13 +166,9 @@
+@@ -162,13 +171,9 @@
          }
  
          //if path not specified on the command line then get it from domain.xml
