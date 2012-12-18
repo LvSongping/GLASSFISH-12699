@@ -232,6 +232,7 @@ public class ArchiveFactory implements ContractProvider {
         return openArchive(uri);
     }
 
+
     /**
      *Create a URI for the jar specified by the path string.
      *<p>

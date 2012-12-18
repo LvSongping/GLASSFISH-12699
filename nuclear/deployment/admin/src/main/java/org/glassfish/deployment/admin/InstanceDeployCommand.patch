@@ -1,6 +1,6 @@
 Index: InstanceDeployCommand.java
 ===================================================================
---- InstanceDeployCommand.java	(revision 56959)
+--- InstanceDeployCommand.java	(revision 57619)
 +++ InstanceDeployCommand.java	(working copy)
 @@ -167,8 +167,9 @@
          }
@@ -8,8 +8,8 @@ Index: InstanceDeployCommand.java
          try {
 -            if (!path.exists()) {
 -                report.setMessage(localStrings.getLocalString("fnf","File not found", path.getAbsolutePath()));
-+        	File file = getPathAsFile();
-+            if (file != null && !file.exists()) {
++            File file = getPathAsFile();
++            if (!file.exists()) {
 +                report.setMessage(localStrings.getLocalString("fnf","File not found", file.getAbsolutePath()));
                  report.setActionExitCode(ActionReport.ExitCode.FAILURE);
                  return;

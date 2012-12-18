@@ -167,8 +167,8 @@ public class InstanceDeployCommand extends InstanceDeployCommandParameters
         }
 
         try {
-        	File file = getPathAsFile();
-            if (file != null && !file.exists()) {
+            File file = getPathAsFile();
+            if (!file.exists()) {
                 report.setMessage(localStrings.getLocalString("fnf","File not found", file.getAbsolutePath()));
                 report.setActionExitCode(ActionReport.ExitCode.FAILURE);
                 return;

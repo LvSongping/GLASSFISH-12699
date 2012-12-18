@@ -1,6 +1,6 @@
 Index: ReDeployCommand.java
 ===================================================================
---- ReDeployCommand.java	(revision 56959)
+--- ReDeployCommand.java	(revision 57619)
 +++ ReDeployCommand.java	(working copy)
 @@ -64,6 +64,8 @@
  import java.util.Collection;
@@ -11,7 +11,7 @@ Index: ReDeployCommand.java
  import org.glassfish.api.admin.AccessRequired;
  
  /**
-@@ -91,7 +93,13 @@
+@@ -91,8 +93,14 @@
      String name;
  
      @Param(primary=true, optional=true)
@@ -19,13 +19,14 @@ Index: ReDeployCommand.java
 +    public void setPath(URI path) {
 +        super.setPath(path);
 +    }
-+
+     
 +    public URI getPath() {
 +        return super.getPath();
 +    }
-     
++    
      @Inject
      private ConfigBeansUtilities configBeansUtilities;
+ 
 @@ -126,6 +134,7 @@
          }
  

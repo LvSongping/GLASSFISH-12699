@@ -96,7 +96,7 @@ public class ReDeployCommand extends DeployCommandParameters implements AdminCom
     public void setPath(URI path) {
         super.setPath(path);
     }
-
+    
     public URI getPath() {
         return super.getPath();
     }

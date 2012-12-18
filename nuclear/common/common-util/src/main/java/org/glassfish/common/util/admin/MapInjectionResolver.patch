@@ -1,6 +1,6 @@
 Index: MapInjectionResolver.java
 ===================================================================
---- MapInjectionResolver.java	(revision 56959)
+--- MapInjectionResolver.java	(revision 57265)
 +++ MapInjectionResolver.java	(working copy)
 @@ -45,6 +45,7 @@
  import java.lang.reflect.AnnotatedElement;
@@ -10,12 +10,33 @@ Index: MapInjectionResolver.java
  import java.security.AccessController;
  import java.security.PrivilegedAction;
  import java.util.ArrayList;
-@@ -369,6 +370,8 @@
+@@ -388,10 +389,29 @@
                  convertStringToStringArray(paramValStr, param.separator());
          } else if (type.isAssignableFrom(File.class)) {
              return new File(paramValStr);
 +        } else if (type.isAssignableFrom(URI.class)) {
++            paramValStr = ConvertStringToURIMode(paramValStr);
 +            return URI.create(paramValStr);
          }
          return paramValue;
      }
+ 
++    private static String ConvertStringToURIMode(String paramValStr){
++        int index;
++        String newparamValStr;
++        if (paramValStr.contains("file:\\")){
++            index = paramValStr.indexOf("file:\\");
++            newparamValStr = paramValStr.substring(index);
++            newparamValStr = newparamValStr.replace("\\", "/");
++        } else if (paramValStr.contains("file:/")){
++            return paramValStr;
++        } else {
++            File file = new File(paramValStr);
++            newparamValStr = file.toURI().toString();
++        }
++        return newparamValStr;
++    }
++
+     /**
+      * Convert the List<String> parameter to the specified type.
+      *

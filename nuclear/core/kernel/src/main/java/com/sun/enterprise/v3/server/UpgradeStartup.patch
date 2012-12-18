@@ -1,6 +1,6 @@
 Index: UpgradeStartup.java
 ===================================================================
---- UpgradeStartup.java	(revision 56959)
+--- UpgradeStartup.java	(revision 57265)
 +++ UpgradeStartup.java	(working copy)
 @@ -314,7 +314,7 @@
              }

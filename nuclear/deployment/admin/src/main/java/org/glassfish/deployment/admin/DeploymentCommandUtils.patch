@@ -1,6 +1,6 @@
 Index: DeploymentCommandUtils.java
 ===================================================================
---- DeploymentCommandUtils.java	(revision 56959)
+--- DeploymentCommandUtils.java	(revision 57619)
 +++ DeploymentCommandUtils.java	(working copy)
 @@ -63,6 +63,7 @@
  import org.glassfish.internal.deployment.Deployment;
@@ -23,7 +23,7 @@ Index: DeploymentCommandUtils.java
              ServerEnvironment env) throws IOException {
          if (fileParam == null) {
              return null;
-@@ -172,48 +173,74 @@
+@@ -172,48 +173,73 @@
           * directory-deployment case or the in-place archive case if we ae
           * not copying the in-place archive.
           */
@@ -97,10 +97,10 @@ Index: DeploymentCommandUtils.java
 -                                System.currentTimeMillis() - startTime});
 -                }
 +            } else {
-+                // It is not a file URI. So, we need to copy it
-+                final String child = fileParam.getSchemeSpecificPart(); // FIXME: This is not correct
-+                result = new File(finalUploadDir, child);
-+                FileUtils.copy(file, result);
++            // It is not a file URI. So, we need to copy it
++            final String child = fileParam.getSchemeSpecificPart(); // FIXME: This is not correct
++            result = new File(finalUploadDir, child);
++            FileUtils.copy(file, result);
              }
          }
          return result;
@@ -116,7 +116,6 @@ Index: DeploymentCommandUtils.java
 +        }
 +        return renameUploadedFileOrCopyInPlaceFile(finalUploadDir, fileParam.toURI(), logger, env);
 +    }
-+
 +
      private static StringBuilder getTargetResourceName(final Domain d,
                  final String target) {

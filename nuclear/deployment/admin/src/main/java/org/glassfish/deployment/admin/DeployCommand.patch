@@ -1,6 +1,6 @@
 Index: DeployCommand.java
 ===================================================================
---- DeployCommand.java	(revision 56959)
+--- DeployCommand.java	(revision 57619)
 +++ DeployCommand.java	(working copy)
 @@ -155,7 +155,7 @@
      private File safeCopyOfDeploymentPlan = null;
@@ -37,7 +37,7 @@ Index: DeployCommand.java
          
          try {
 -            archive = archiveFactory.openArchive(path, this);
-+        	archive = file != null ? archiveFactory.openArchive(file, this)
++            archive = file != null ? archiveFactory.openArchive(file, this)
 +                    : archiveFactory.openArchive(getPath(), this);
              if (tracing!=null) {
                  tracing.addMark(DeploymentTracing.Mark.ARCHIVE_OPENED);
@@ -50,7 +50,7 @@ Index: DeployCommand.java
                  report.failure(logger, msg, e);
              } else {
 -                report.setMessage(msg + path.getAbsolutePath() + e.toString());
-+                report.setMessage(msg + " " + getPath() + " " + e.toString());
++                report.setMessage(msg + getPath() + e.toString());
                  report.setActionExitCode(ActionReport.ExitCode.FAILURE);
              }
              return false;
@@ -72,7 +72,7 @@ Index: DeployCommand.java
              } else {
                  // test if a version is already directory deployed from this dir
                  String versionFromSameDir =
-@@ -549,7 +551,7 @@
+@@ -550,7 +552,7 @@
                  logger.log(Level.FINE, localStrings.getLocalString(
                          "errClosingArtifact", 
                          "Error while closing deployable artifact : ",

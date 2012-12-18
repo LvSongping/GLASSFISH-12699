@@ -1,6 +1,6 @@
 Index: ValidateRemoteDirDeploymentCommand.java
 ===================================================================
---- ValidateRemoteDirDeploymentCommand.java	(revision 56959)
+--- ValidateRemoteDirDeploymentCommand.java	(revision 57619)
 +++ ValidateRemoteDirDeploymentCommand.java	(working copy)
 @@ -168,7 +168,7 @@
           */

@@ -192,7 +192,6 @@ public class DeployCommandParameters extends OpsParams {
     public URI getPath() {
         return path;
     }
-
     @Param(primary=true)
     public void setPath(URI path) {
         // An absolute URI has a scheme, in such a case, we use the URI as is.
@@ -267,7 +266,7 @@ public class DeployCommandParameters extends OpsParams {
     }
 
     public DeployCommandParameters(File path) {
-        this.setPath(path);
+    	this.setPath(path);
         if (path.getName().lastIndexOf('.')!=-1) {
             name=path.getName().substring(0, path.getName().lastIndexOf('.'));
         } else {

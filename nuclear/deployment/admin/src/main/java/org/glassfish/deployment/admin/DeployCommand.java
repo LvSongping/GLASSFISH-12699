@@ -213,7 +213,7 @@ public class DeployCommand extends DeployCommandParameters implements AdminComma
 
         
         try {
-        	archive = file != null ? archiveFactory.openArchive(file, this)
+            archive = file != null ? archiveFactory.openArchive(file, this)
                     : archiveFactory.openArchive(getPath(), this);
             if (tracing!=null) {
                 tracing.addMark(DeploymentTracing.Mark.ARCHIVE_OPENED);
@@ -224,7 +224,7 @@ public class DeployCommand extends DeployCommandParameters implements AdminComma
             if (logReportedErrors) {
                 report.failure(logger, msg, e);
             } else {
-                report.setMessage(msg + " " + getPath() + " " + e.toString());
+                report.setMessage(msg + getPath() + e.toString());
                 report.setActionExitCode(ActionReport.ExitCode.FAILURE);
             }
             return false;
@@ -473,9 +473,10 @@ public class DeployCommand extends DeployCommandParameters implements AdminComma
                 appProps.setProperty(ServerTags.CONTEXT_ROOT, contextroot);
             }
             appProps.setProperty(ServerTags.DIRECTORY_DEPLOYED, String.valueOf(isDirectoryDeployed));
-            if (type != null) {
-                appProps.setProperty(Application.ARCHIVE_TYPE_PROP_NAME, type);
+            if (type == null) {
+                type = archiveHandler.getArchiveType();
             }
+            appProps.setProperty(Application.ARCHIVE_TYPE_PROP_NAME, type);
 
             savedAppConfig.store(appProps);
 

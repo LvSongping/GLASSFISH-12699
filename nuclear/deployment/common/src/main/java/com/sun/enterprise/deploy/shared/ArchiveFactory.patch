@@ -1,8 +1,8 @@
 Index: ArchiveFactory.java
 ===================================================================
---- ArchiveFactory.java	(revision 56959)
+--- ArchiveFactory.java	(revision 57619)
 +++ ArchiveFactory.java	(working copy)
-@@ -218,7 +218,20 @@
+@@ -218,7 +218,21 @@
              throw new MalformedURLException("Protocol not supported : " + provider);
          } 
      }
@@ -20,6 +20,7 @@ Index: ArchiveFactory.java
 +        }
 +        return openArchive(uri);
 +    }
++
 +
      /**
       *Create a URI for the jar specified by the path string.

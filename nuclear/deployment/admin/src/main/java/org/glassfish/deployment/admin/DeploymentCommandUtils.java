@@ -220,10 +220,10 @@ public class DeploymentCommandUtils {
                     result = file;
                 }
             } else {
-                // It is not a file URI. So, we need to copy it
-                final String child = fileParam.getSchemeSpecificPart(); // FIXME: This is not correct
-                result = new File(finalUploadDir, child);
-                FileUtils.copy(file, result);
+            // It is not a file URI. So, we need to copy it
+            final String child = fileParam.getSchemeSpecificPart(); // FIXME: This is not correct
+            result = new File(finalUploadDir, child);
+            FileUtils.copy(file, result);
             }
         }
         return result;
@@ -239,7 +239,6 @@ public class DeploymentCommandUtils {
         }
         return renameUploadedFileOrCopyInPlaceFile(finalUploadDir, fileParam.toURI(), logger, env);
     }
-
 
     private static StringBuilder getTargetResourceName(final Domain d,
                 final String target) {

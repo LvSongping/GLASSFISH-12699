@@ -1,6 +1,6 @@
 Index: DeployCommandParameters.java
 ===================================================================
---- DeployCommandParameters.java	(revision 56959)
+--- DeployCommandParameters.java	(revision 57265)
 +++ DeployCommandParameters.java	(working copy)
 @@ -44,6 +44,7 @@
  import org.glassfish.api.I18n;
@@ -10,7 +10,7 @@ Index: DeployCommandParameters.java
  import java.util.Properties;
  
  /**
-@@ -183,12 +184,42 @@
+@@ -183,12 +184,41 @@
        return logReportedErrors;
      }
  
@@ -22,7 +22,6 @@ Index: DeployCommandParameters.java
 +    public URI getPath() {
 +        return path;
 +    }
-+
      @Param(primary=true)
 -    public File path;
 -    public File getPath() {
@@ -56,12 +55,12 @@ Index: DeployCommandParameters.java
      @Param(optional=true)
      public String description;
  
-@@ -236,7 +267,7 @@
+@@ -236,7 +266,7 @@
      }
  
      public DeployCommandParameters(File path) {
 -        this.path = path;
-+        this.setPath(path);
++    	this.setPath(path);
          if (path.getName().lastIndexOf('.')!=-1) {
              name=path.getName().substring(0, path.getName().lastIndexOf('.'));
          } else {
