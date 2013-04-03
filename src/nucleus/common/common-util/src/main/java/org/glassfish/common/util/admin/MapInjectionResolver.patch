@@ -1,0 +1,134 @@
+Index: MapInjectionResolver.java
+===================================================================
+--- MapInjectionResolver.java	(revision 60524)
++++ MapInjectionResolver.java	(working copy)
+@@ -41,10 +41,18 @@
+ package org.glassfish.common.util.admin;
+ 
+ import com.sun.enterprise.util.LocalStringManagerImpl;
++
++import java.io.BufferedInputStream;
++import java.io.BufferedOutputStream;
+ import java.io.File;
++import java.io.FileOutputStream;
++import java.io.IOException;
++import java.io.InputStream;
++import java.io.OutputStream;
+ import java.lang.reflect.AnnotatedElement;
+ import java.lang.reflect.Field;
+ import java.lang.reflect.Type;
++import java.net.URL;
+ import java.security.AccessController;
+ import java.security.PrivilegedAction;
+ import java.util.ArrayList;
+@@ -53,7 +61,12 @@
+ import java.util.Properties;
+ import java.util.logging.Level;
+ import java.util.logging.Logger;
++import java.util.regex.Matcher;
++import java.util.regex.Pattern;
++
+ import javax.validation.Validator;
++
++import org.apache.commons.net.ftp.FTPClient;
+ import org.glassfish.api.ExecutionContext;
+ import org.glassfish.api.Param;
+ import org.glassfish.api.ParamDefaultCalculator;
+@@ -108,6 +121,81 @@
+        return param.getParam().optional();
+     }
+ 
++    private void FormatUriToFile() throws IOException {
++        List<String> value = parameters.get("DEFAULT");
++        String uri = value.get(0);
++        URL url = new URL(uri);
++        File file = null;
++        
++        if (uri.startsWith("file:/")) {
++            file = new File (url.getFile());
++        } else if (uri.startsWith("http://")){
++            InputStream inStream = url.openStream(); 
++            BufferedInputStream bufIn = new BufferedInputStream(inStream);
++
++            file = new File(System.getenv().get("TEMP") + uri.substring(uri.lastIndexOf("/")));
++            if (file.exists()){
++                file.delete();
++            }
++            OutputStream out= new FileOutputStream(file);
++            BufferedOutputStream bufOut = new BufferedOutputStream(out);
++            byte buffer[] = new byte[204800];
++            while (true) {
++                int nRead = bufIn.read(buffer, 0, buffer.length); 
++                if (nRead <= 0)
++                    break;
++                bufOut.write(buffer, 0, nRead);
++            }
++            bufOut.flush();
++            out.close();
++            inStream.close();
++        } else if (uri.startsWith("ftp://")){
++            String pattern = "^ftp://(.+?)(:.+?)?@(\\S+):(\\d+)(\\S+)$";
++            Pattern p = Pattern.compile(pattern);
++            Matcher m = p.matcher(uri);
++            if (m.matches()) {
++                String username = m.group(1);
++                String password = "";
++                if (m.group(2) != null) {
++                    password = m.group(2).replace(":", "");
++                }
++                String ipAddress = m.group(3);
++                String port = m.group(4);
++                String path = m.group(5);
++                FTPClient ftp = new FTPClient();
++                ftp.connect(ipAddress);
++                ftp.setDefaultPort(Integer.parseInt(port));
++                boolean isLogin = ftp.login(username, password);
++                if (isLogin) {
++                    ftp.setFileType(FTPClient.BINARY_FILE_TYPE); 
++                    byte[] buf = new byte[204800];
++                    int bufsize = 0;
++
++                    file = new File(System.getenv().get("TEMP") + uri.substring(uri.lastIndexOf("/")));
++                    if (file.exists()){
++                        file.delete();
++                    }
++                    OutputStream ftpOut= new FileOutputStream(file);
++                    InputStream ftpIn = ftp.retrieveFileStream(path);
++                    System.out.println(ftpIn);
++                    while ((bufsize = ftpIn.read(buf, 0, buf.length)) != -1) {
++                        ftpOut.write(buf, 0, bufsize);
++                    }
++                    ftpOut.flush();
++                    ftpOut.close();
++                    ftpIn.close();
++                } else {
++                    ftp.logout();
++                    ftp.disconnect();
++                }
++            } else {
++                localStrings.getLocalString("IncorrectFtpAddress", "The ftp address is not correct, please change another one.");
++            }
++        }
++        if (file != null)
++            parameters.set("DEFAULT", file.getAbsolutePath());
++    }
++    
+     @Override
+     public <V> V getValue(Object component, AnnotatedElement target, Type genericType, Class<V> type) throws MultiException {
+ 	// look for the name in the list of parameters passed.
+@@ -116,6 +204,15 @@
+ 	if (param.primary()) {
+ 	    // this is the primary parameter for the command
+             List<String> value = parameters.get("DEFAULT");
++            if ("uri".endsWith(paramName)) {
++                try {
++                    FormatUriToFile();
++                } catch (IOException e) {
++                    // TODO Auto-generated catch block
++                    e.printStackTrace();
++                }
++                value = parameters.get("DEFAULT");
++            }
+ 	    if (value != null && value.size() > 0) {
+                 /*
+                  * If the operands are uploaded files, replace the

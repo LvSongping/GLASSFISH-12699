@@ -1,0 +1,15 @@
+Index: pom.xml
+===================================================================
+--- pom.xml	(revision 60524)
++++ pom.xml	(working copy)
+@@ -111,5 +111,10 @@
+             <artifactId>logging-annotation-processor</artifactId>
+             <optional>true</optional>
+         </dependency>
++        <dependency>
++            <groupId>org.glassfish.main.external</groupId>
++            <artifactId>apache-commons-net</artifactId>
++            <version>${project.version}</version>
++        </dependency>
+     </dependencies>
+ </project>
