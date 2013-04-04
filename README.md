@@ -38,3 +38,7 @@ for example: I have download the test_sample2 to the directory d:/test/test_samp
 1).It can be deployed to the remote server using --host option.
 
 2).It also can be deployed to the cluster or instance using --target option.
+
+## GlassFish leader:
+1). Hong Zhang： hong.hz.zhang@oracle.com
+2). Tom Muller:  Tom.Mueller@oracle.com
