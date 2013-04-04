@@ -23,15 +23,20 @@ for example: I have download the test_sample2 to the directory d:/test/test_samp
 
 2).Add the apache-commons-net.jar to the directory $GF_HOME/modules
 
-3).asadmin start-domain
+3).If you need to set the proxy because of the company security, you need to set following configuration in GF_HOME/domains/domain1/config/domain.xml:
 
-4).asadmin deployuri file:/d:/test/test_sample2.war(Be sure the application to be deployed must be on the same side of the server).
+ <jvm-options>http.proxyHost=XXXXX</jvm-options>
+ <jvm-options>http.proxyPort=XXXXX</jvm-options>
 
-5).asadmin deployuri http://java.net/jira/secure/attachment/50467/test_sample1.war
+4).asadmin start-domain
 
-6).Create a ftp server and execute the following command as "asadmin deployuri  ftp://username:password@host:21/test_sample1.war"
+5).asadmin deployuri file:/d:/test/test_sample2.war(Be sure the application to be deployed must be on the same side of the server).
 
-7).open the website about http://localhost:8080/test_sample1 and http://localhost:8080/test_sample2 whether it can be accessed successfully
+6).asadmin deployuri http://java.net/jira/secure/attachment/50467/test_sample1.war
+
+7).Create a ftp server and execute the following command as "asadmin deployuri  ftp://username:password@host:21/test_sample1.war"
+
+8).open the website about http://localhost:8080/test_sample1 and http://localhost:8080/test_sample2 whether it can be accessed successfully
 
 ##Important notice:
 
