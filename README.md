@@ -25,7 +25,10 @@ for example: I have download the test_sample2 to the directory d:/test/test_samp
 
 3).If you need to set the proxy because of the company security, you need to set following configuration in GF_HOME/domains/domain1/config/domain.xml:
 
+ Your options would then go into the appropriate section: /domain/configs/config/java-config/
+
  <jvm-options>http.proxyHost=XXXXX</jvm-options>
+ 
  <jvm-options>http.proxyPort=XXXXX</jvm-options>
 
 4).asadmin start-domain
